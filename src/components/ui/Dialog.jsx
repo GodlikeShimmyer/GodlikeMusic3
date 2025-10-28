@@ -1,42 +1,67 @@
-import React from 'react';
-import { X } from 'lucide-react';
+import React, { createContext, useContext, useState } from 'react';
 import { clsx } from 'clsx';
 
-export function Dialog({ children, open, onOpenChange }) {
-  if (!open) return null;
+const DropdownContext = createContext();
+
+export function DropdownMenu({ children }) {
+  const [open, setOpen] = useState(false);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div
-        className="fixed inset-0 bg-black/80"
-        onClick={() => onOpenChange(false)}
-      />
-      <div className="relative z-50">{children}</div>
-    </div>
+    <DropdownContext.Provider value={{ open, setOpen }}>
+      <div className="relative">{children}</div>
+    </DropdownContext.Provider>
   );
 }
 
-export function DialogContent({ children, className = '' }) {
+export function DropdownMenuTrigger({ children, asChild }) {
+  const { open, setOpen } = useContext(DropdownContext);
+
+  if (asChild) {
+    return React.cloneElement(children, {
+      onClick: () => setOpen(!open),
+    });
+  }
+
   return (
-    <div
+    <button onClick={() => setOpen(!open)}>
+      {children}
+    </button>
+  );
+}
+
+export function DropdownMenuContent({ children }) {
+  const { open, setOpen } = useContext(DropdownContext);
+
+  if (!open) return null;
+
+  return (
+    <>
+      <div
+        className="fixed inset-0 z-40"
+        onClick={() => setOpen(false)}
+      />
+      <div className="absolute right-0 mt-2 bg-gray-800 border border-white/20 rounded-lg shadow-lg z-50 min-w-[200px]">
+        {children}
+      </div>
+    </>
+  );
+}
+
+export function DropdownMenuItem({ children, onClick, className = '' }) {
+  const { setOpen } = useContext(DropdownContext);
+
+  return (
+    <button
+      onClick={() => {
+        onClick?.();
+        setOpen(false);
+      }}
       className={clsx(
-        'bg-gray-900 border border-gray-800 rounded-lg p-6 max-w-md w-full mx-4 shadow-xl',
+        'w-full px-4 py-2 text-left text-white hover:bg-white/10 transition-colors flex items-center',
         className
       )}
     >
       {children}
-    </div>
+    </button>
   );
-}
-
-export function DialogHeader({ children }) {
-  return <div className="mb-4">{children}</div>;
-}
-
-export function DialogTitle({ children }) {
-  return <h2 className="text-xl font-bold text-white">{children}</h2>;
-}
-
-export function DialogFooter({ children }) {
-  return <div className="mt-6 flex justify-end gap-3">{children}</div>;
 }
