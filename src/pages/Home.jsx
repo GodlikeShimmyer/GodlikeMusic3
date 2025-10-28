@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Play, Plus } from 'lucide-react';
 import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
-import { storage } from '../utils/helpers';
+import { storage, getGreeting } from '../utils/helpers';
 import PlayerStore from '../store/PlayerStore';
 
 export default function Home() {
@@ -27,17 +27,8 @@ export default function Home() {
       {/* Hero Section */}
       <div className="relative h-80 bg-gradient-to-b from-godlike-green/20 to-transparent p-8 flex items-end">
         <div className="max-w-7xl mx-auto w-full">
-          <h1 className="text-6xl font-bold mb-4">
-            Good{' '}
-            {new Date().getHours() < 12
-              ? 'morning'
-              : new Date().getHours() < 18
-              ? 'afternoon'
-              : 'evening'}
-          </h1>
-          <p className="text-xl text-gray-300">
-            What do you want to listen to today?
-          </p>
+          <h1 className="text-6xl font-bold mb-4">{getGreeting()}</h1>
+          <p className="text-xl text-gray-300">What do you want to listen to today?</p>
         </div>
       </div>
 
@@ -50,67 +41,91 @@ export default function Home() {
               {recentlyPlayed.map((track, idx) => (
                 <Card
                   key={idx}
-                  className="bg-white/5 border-none hover:bg-white/10 transition-all p-4 group cursor-pointer"
+                  className="bg-white/5 hover:bg-white/10 p-4 group cursor-pointer"
                   onClick={() => handlePlayTrack(track)}
                 >
                   <div className="relative mb-4">
                     <img
-                      src={track.thumbnail || '/default_album.png'}
+                      src={track.thumbnail}
                       alt={track.title}
-                      className="rounded-xl w-full h-40 object-cover"
+                      className="w-full aspect-square object-cover rounded-md"
                     />
-                    <button
-                      className="absolute bottom-2 right-2 bg-godlike-green text-black p-2 rounded-full opacity-0 group-hover:opacity-100 transition"
-                    >
-                      <Play size={20} />
+                    <button className="absolute bottom-2 right-2 w-12 h-12 bg-godlike-green rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0 shadow-xl">
+                      <Play className="w-5 h-5 text-black fill-black ml-1" />
                     </button>
                   </div>
                   <h3 className="font-semibold truncate">{track.title}</h3>
-                  <p className="text-sm text-gray-400 truncate">
-                    {track.artist || 'Unknown Artist'}
-                  </p>
+                  <p className="text-sm text-gray-400 truncate">{track.artist}</p>
                 </Card>
               ))}
             </div>
           </section>
         )}
 
-        {/* Your Playlists */}
-        <section>
-          <h2 className="text-3xl font-bold mb-6 flex justify-between items-center">
-            Your Playlists
-            <Link to="/create-playlist">
-              <Button variant="outline" size="sm">
-                <Plus size={16} className="mr-2" /> New Playlist
-              </Button>
-            </Link>
-          </h2>
-
-          {playlists.length > 0 ? (
+        {/* Featured Playlists */}
+        {playlists.length > 0 && (
+          <section>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-3xl font-bold">Your Playlists</h2>
+              <Link to="/library">
+                <Button variant="link" className="text-gray-400 hover:text-white">
+                  Show all
+                </Button>
+              </Link>
+            </div>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-              {playlists.map((playlist, idx) => (
-                <Link to={`/playlist/${playlist.id}`} key={idx}>
-                  <Card className="bg-white/5 border-none hover:bg-white/10 transition-all p-4">
+              {playlists.map((playlist) => (
+                <Link key={playlist.id} to={`/playlist/${playlist.id}`}>
+                  <Card className="bg-white/5 hover:bg-white/10 p-4 group cursor-pointer">
                     <div className="relative mb-4">
                       <img
-                        src={playlist.thumbnail || '/default_playlist.png'}
+                        src={playlist.cover_url}
                         alt={playlist.name}
-                        className="rounded-xl w-full h-40 object-cover"
+                        className="w-full aspect-square object-cover rounded-md"
                       />
+                      <button className="absolute bottom-2 right-2 w-12 h-12 bg-godlike-green rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0 shadow-xl">
+                        <Play className="w-5 h-5 text-black fill-black ml-1" />
+                      </button>
                     </div>
                     <h3 className="font-semibold truncate">{playlist.name}</h3>
                     <p className="text-sm text-gray-400 truncate">
-                      {playlist.tracks?.length || 0} tracks
+                      {playlist.tracks?.length || 0} songs
                     </p>
                   </Card>
                 </Link>
               ))}
             </div>
-          ) : (
-            <p className="text-gray-400">
-              You don’t have any playlists yet. Create one to get started!
-            </p>
-          )}
+          </section>
+        )}
+
+        {/* Quick Actions */}
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Link to="/create-playlist">
+            <Card className="bg-gradient-to-br from-purple-600/20 to-purple-900/20 border-purple-500/30 p-8 hover:scale-105 transition-transform cursor-pointer">
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 bg-purple-500 rounded-xl flex items-center justify-center">
+                  <Plus className="w-8 h-8" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold">Create Playlist</h3>
+                  <p className="text-gray-300">Start building your perfect mix</p>
+                </div>
+              </div>
+            </Card>
+          </Link>
+          <Link to="/search">
+            <Card className="bg-gradient-to-br from-blue-600/20 to-blue-900/20 border-blue-500/30 p-8 hover:scale-105 transition-transform cursor-pointer">
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 bg-godlike-blue rounded-xl flex items-center justify-center">
+                  <Play className="w-8 h-8 fill-white" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold">Discover Music</h3>
+                  <p className="text-gray-300">Find your next favorite song</p>
+                </div>
+              </div>
+            </Card>
+          </Link>
         </section>
       </div>
     </div>
