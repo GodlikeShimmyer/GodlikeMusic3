@@ -1,7 +1,8 @@
 import React from "react";
 import clsx from "clsx";
 
-export default function Input({ placeholder = "", value, onChange, className = "" }) {
+// Named export
+export function Input({ placeholder = "", value, onChange, className = "" }) {
   return (
     <input
       type="text"
@@ -15,3 +16,6 @@ export default function Input({ placeholder = "", value, onChange, className = "
     />
   );
 }
+
+// Default export to support `import Input from "..."`
+export default Input;
