@@ -2,15 +2,16 @@
 export default {
   content: [
     "./index.html",
-    "./src/**/*.{js,jsx}",
+    "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
       colors: {
-        'godlike-green': '#00FF9D',
-        'godlike-blue': '#00B7FF',
-        'godlike-cyan': '#00FFF7',
-        border: '#1f2937', // fix: define safe color for border-border
+        godlike: {
+          green: '#00C46A',
+          blue: '#0077FF',
+          cyan: '#00E5FF',
+        },
       },
     },
   },
