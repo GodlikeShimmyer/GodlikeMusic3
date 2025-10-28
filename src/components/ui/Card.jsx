@@ -1,12 +1,9 @@
-import React from 'react';
-import { clsx } from 'clsx';
+import React from "react";
+import clsx from "clsx";
 
-export function Card({ children, className = '', ...props }) {
+export default function Card({ children, className = "" }) {
   return (
-    <div
-      className={clsx('rounded-lg border border-white/10', className)}
-      {...props}
-    >
+    <div className={clsx("bg-white/5 rounded-2xl p-4 shadow-lg", className)}>
       {children}
     </div>
   );
