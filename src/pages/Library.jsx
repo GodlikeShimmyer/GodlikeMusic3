@@ -44,12 +44,9 @@ export default function Library() {
 
   const folders = Object.keys(playlistsByFolder).filter(f => f !== "");
 
-  const getPlaylistIcon = (iconName) => {
-    return iconMap[iconName] || Music;
-  };
+  const getPlaylistIcon = (iconName) => iconMap[iconName] || Music;
 
   const handlePlayTrack = (track) => {
-    // Implement play functionality
     console.log('Playing track:', track);
   };
 
