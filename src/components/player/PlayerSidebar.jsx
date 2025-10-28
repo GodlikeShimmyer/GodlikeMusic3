@@ -1,6 +1,6 @@
 import React from "react";
 import { Play, Pause, SkipForward, SkipBack } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import Button from "../ui/Button";
 
 export default function PlayerSidebar({ isPlaying, onPlayPause, onSkipNext, onSkipPrev }) {
   return (
@@ -17,34 +17,15 @@ export default function PlayerSidebar({ isPlaying, onPlayPause, onSkipNext, onSk
       </div>
 
       <div className="flex items-center justify-center space-x-6 mt-6">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={onSkipPrev}
-          className="hover:scale-110 transition-transform"
-        >
+        <Button variant="ghost" size="icon" onClick={onSkipPrev}>
           <SkipBack className="w-6 h-6" />
         </Button>
 
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={onPlayPause}
-          className="hover:scale-110 transition-transform"
-        >
-          {isPlaying ? (
-            <Pause className="w-8 h-8" />
-          ) : (
-            <Play className="w-8 h-8" />
-          )}
+        <Button variant="ghost" size="icon" onClick={onPlayPause}>
+          {isPlaying ? <Pause className="w-8 h-8" /> : <Play className="w-8 h-8" />}
         </Button>
 
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={onSkipNext}
-          className="hover:scale-110 transition-transform"
-        >
+        <Button variant="ghost" size="icon" onClick={onSkipNext}>
           <SkipForward className="w-6 h-6" />
         </Button>
       </div>
