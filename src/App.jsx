@@ -8,20 +8,22 @@ import CreatePlaylist from './pages/CreatePlaylist';
 import PlaylistDetail from './pages/PlaylistDetail';
 import LikedSongs from './pages/LikedSongs';
 
-export default function App() {
+function App() {
   return (
     <BrowserRouter>
       <Layout>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Navigate to="/home" replace />} />
+          <Route path="/home" element={<Home />} />
           <Route path="/search" element={<Search />} />
           <Route path="/library" element={<Library />} />
           <Route path="/create-playlist" element={<CreatePlaylist />} />
           <Route path="/playlist/:id" element={<PlaylistDetail />} />
           <Route path="/liked-songs" element={<LikedSongs />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Layout>
     </BrowserRouter>
   );
 }
+
+export default App;
