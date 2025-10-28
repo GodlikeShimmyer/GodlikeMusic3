@@ -51,12 +51,12 @@ export default function PlayerSidebar({ isOpen, onClose }) {
             <Card
               key={index}
               onClick={() => PlayerStore.playTrack(track)}
-              className={`bg-white/5 hover:bg-white/10 transition-all p-3 flex items-center gap-3 cursor-pointer ${
+              className={`bg-white/5 hover:bg-white/10 p-3 flex items-center gap-3 cursor-pointer ${
                 track.video_id === currentTrack.video_id ? 'bg-white/10' : ''
               }`}
             >
               <img
-                src={track.thumbnail || 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=100'}
+                src={track.thumbnail}
                 alt={track.title}
                 className="w-12 h-12 rounded"
               />
