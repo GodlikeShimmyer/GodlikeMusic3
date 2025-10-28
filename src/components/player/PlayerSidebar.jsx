@@ -1,86 +1,53 @@
-import React, { useState, useEffect } from "react";
-import { Play, Pause, SkipForward, SkipBack, Volume2 } from "lucide-react";
-import { motion } from "framer-motion";
+import React from "react";
+import { Play, Pause, SkipForward, SkipBack } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-// You can connect this later to your actual player context or API
-export default function PlayerSidebar({ currentTrack }) {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [volume, setVolume] = useState(0.8);
-
-  // Fake playback logic for now
-  useEffect(() => {
-    if (isPlaying) {
-      console.log("▶️ Playing:", currentTrack?.title || "Unknown Track");
-    } else {
-      console.log("⏸️ Paused");
-    }
-  }, [isPlaying, currentTrack]);
-
-  const togglePlay = () => setIsPlaying((p) => !p);
-  const nextTrack = () => console.log("⏭️ Next track");
-  const prevTrack = () => console.log("⏮️ Previous track");
-
+export default function PlayerSidebar({ isPlaying, onPlayPause, onSkipNext, onSkipPrev }) {
   return (
-    <motion.div
-      className="flex flex-col justify-between bg-gradient-to-b from-cyan-900 to-green-900 text-white w-64 p-4 rounded-2xl shadow-lg"
-      initial={{ x: -20, opacity: 0 }}
-      animate={{ x: 0, opacity: 1 }}
-      transition={{ duration: 0.3 }}
-    >
-      {/* Current track info */}
-      <div className="mb-6">
-        {currentTrack ? (
-          <>
-            <img
-              src={currentTrack.thumbnail || "/placeholder.png"}
-              alt={currentTrack.title}
-              className="rounded-xl mb-3 w-full aspect-square object-cover"
-            />
-            <h2 className="text-lg font-semibold truncate">
-              {currentTrack.title}
-            </h2>
-            <p className="text-sm opacity-75">{currentTrack.artist}</p>
-          </>
-        ) : (
-          <p className="text-center opacity-70 italic">No track selected</p>
-        )}
+    <div className="flex flex-col items-center justify-between h-full p-4 bg-gradient-to-b from-cyan-700 via-blue-700 to-green-700 text-white rounded-2xl shadow-lg">
+      <div className="flex flex-col items-center space-y-4">
+        <h2 className="text-xl font-semibold tracking-wide">Now Playing</h2>
+        <div className="flex flex-col items-center text-center space-y-2">
+          <div className="w-24 h-24 bg-black/30 rounded-xl flex items-center justify-center">
+            <Play className="w-10 h-10 text-white opacity-60" />
+          </div>
+          <p className="font-medium text-base">Song Title</p>
+          <p className="text-sm text-white/70">Artist Name</p>
+        </div>
       </div>
 
-      {/* Player controls */}
-      <div className="flex flex-col gap-4 items-center">
-        <div className="flex justify-center gap-4 items-center">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={prevTrack}
-            className="hover:text-cyan-400"
-          >
-            <SkipBack size={22} />
-          </Button>
+      <div className="flex items-center justify-center space-x-6 mt-6">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={onSkipPrev}
+          className="hover:scale-110 transition-transform"
+        >
+          <SkipBack className="w-6 h-6" />
+        </Button>
 
-          <Button
-            variant="default"
-            size="icon"
-            onClick={togglePlay}
-            className="bg-cyan-500 hover:bg-green-500 rounded-full p-4"
-          >
-            {isPlaying ? <Pause size={28} /> : <Play size={28} />}
-          </Button>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={onPlayPause}
+          className="hover:scale-110 transition-transform"
+        >
+          {isPlaying ? (
+            <Pause className="w-8 h-8" />
+          ) : (
+            <Play className="w-8 h-8" />
+          )}
+        </Button>
 
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={nextTrack}
-            className="hover:text-cyan-400"
-          >
-            <SkipForward size={22} />
-          </Button>
-        </div>
-
-        {/* Volume control */}
-        <div className="flex items-center gap-2 w-full">
-          <Volume2 size={18} />
-          <input
-            type="range"
-           
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={onSkipNext}
+          className="hover:scale-110 transition-transform"
+        >
+          <SkipForward className="w-6 h-6" />
+        </Button>
+      </div>
+    </div>
+  );
+}
