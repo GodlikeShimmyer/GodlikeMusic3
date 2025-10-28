@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import PlayerStore from '../../store/PlayerStore';
 import { Play, Pause, SkipBack, SkipForward, Shuffle, Repeat, Volume2, Maximize2 } from 'lucide-react';
+import PlayerSidebar from './PlayerSidebar';
 import { Button } from '../ui/Button';
 import { Slider } from '../ui/Slider';
-import PlayerSidebar from './PlayerSidebar';
 
 export default function Player() {
   const [playerState, setPlayerState] = useState(PlayerStore.getState());
@@ -31,7 +31,7 @@ export default function Player() {
         {/* Track Info */}
         <div className="flex items-center gap-4 flex-1 min-w-0">
           <img
-            src={currentTrack.thumbnail || 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=100'}
+            src={currentTrack.thumbnail}
             alt={currentTrack.title}
             className="w-14 h-14 rounded"
           />
@@ -60,17 +60,16 @@ export default function Player() {
             >
               <SkipBack className="w-5 h-5" />
             </Button>
-            <Button
-              size="lg"
+            <button
               onClick={() => PlayerStore.togglePlay()}
-              className="w-10 h-10 rounded-full bg-white hover:bg-gray-100 text-black"
+              className="w-10 h-10 rounded-full bg-white hover:bg-white/90 flex items-center justify-center text-black"
             >
               {isPlaying ? (
                 <Pause className="w-5 h-5 fill-black" />
               ) : (
                 <Play className="w-5 h-5 fill-black ml-0.5" />
               )}
-            </Button>
+            </button>
             <Button
               size="sm"
               variant="ghost"
@@ -98,7 +97,6 @@ export default function Player() {
               value={[volume]}
               onValueChange={([v]) => PlayerStore.setVolume(v)}
               max={100}
-              className="w-20"
             />
           </div>
           <Button
