@@ -1,35 +1,24 @@
-import React from 'react';
-import { clsx } from 'clsx';
+import React from "react";
+import clsx from "clsx";
 
-export function Button({ 
-  children, 
-  variant = 'default', 
-  size = 'default', 
-  className = '', 
-  disabled = false,
-  ...props 
-}) {
-  const baseStyles = 'inline-flex items-center justify-center rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none';
-  
+export function Button({ children, onClick, variant = "default", size = "md", className = "" }) {
+  const base =
+    "rounded-full font-medium transition focus:outline-none flex items-center justify-center";
   const variants = {
-    default: 'bg-white text-black hover:bg-gray-100',
-    outline: 'border border-white/20 text-white hover:bg-white/10',
-    ghost: 'text-white hover:bg-white/10',
-    link: 'text-white underline-offset-4 hover:underline',
+    default: "bg-green-600 hover:bg-green-700 text-white",
+    ghost: "bg-transparent hover:bg-white/10 text-white",
   };
-  
   const sizes = {
-    default: 'px-4 py-2',
-    sm: 'px-3 py-1.5 text-sm',
-    lg: 'px-6 py-3 text-lg',
-    icon: 'p-2',
+    sm: "px-3 py-1 text-sm",
+    md: "px-4 py-2 text-base",
+    lg: "px-6 py-3 text-lg",
+    icon: "p-2",
   };
 
   return (
     <button
-      className={clsx(baseStyles, variants[variant], sizes[size], className)}
-      disabled={disabled}
-      {...props}
+      onClick={onClick}
+      className={clsx(base, variants[variant], sizes[size], className)}
     >
       {children}
     </button>
